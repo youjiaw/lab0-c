@@ -104,14 +104,13 @@ bool q_delete_mid(struct list_head *head)
 {
     if (!head || list_empty(head))
         return false;
-
-    int mid_node = q_size(head) / 2;
-    struct list_head **indir = &head;
-    for (int i = 0; i <= mid_node; i++)
-        indir = &((*indir)->next);
-    element_t *element = list_entry(*indir, element_t, list);
-    list_del(*indir);
-    q_release_element(element);
+    struct list_head *left = head->next, *right = head->prev;
+    while (!(left == right) && !(right->next == left)) {
+        left = left->next;
+        right = right->prev;
+    }
+    list_del(left);
+    q_release_element(list_entry(left, element_t, list));
     return true;
 }
 
