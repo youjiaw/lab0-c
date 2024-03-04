@@ -135,8 +135,13 @@ bool q_delete_dup(struct list_head *head)
     element_t *current, *next;
     bool flag = false;
     list_for_each_entry_safe (current, next, head, list) {
-        if (current->list.next == head)
+        if (current->list.next == head) {
+            if (flag) {
+                list_del(&current->list);
+                q_release_element(current);
+            }
             break;
+        }
 
         if (strcmp(current->value, next->value) == 0) {
             list_del(&current->list);
