@@ -224,11 +224,8 @@ static void list_merge(struct list_head *head1,
         }
     }
 
-    // Add remaining elements
-    if (!list_empty(head1))
-        list_splice_tail_init(head1, &merged);
-    if (!list_empty(head2))
-        list_splice_tail_init(head2, &merged);
+    (!list_empty(head1)) ? list_splice_tail_init(head1, &merged)
+                         : list_splice_tail_init(head2, &merged);
 
     INIT_LIST_HEAD(head1);
     list_splice(&merged, head1);
